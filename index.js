@@ -19,19 +19,43 @@ const books = [
   {
     id: "3",
     title: 'JavaScript: The Good Parts',
-    author: 'ABC'
+    author: 'Peter'
   },
   {
     id: "4",
     title: 'JavaScript Design Pattern',
-    author: 'ABC'
+    author: 'Peter'
   }
 ];
 
+const authors = [
+  {
+    id: "1",
+    name: "Peter",
+    desc: "This is a very good man"
+  },
+  {
+    id: "2",
+    name: "J.K. Rowling",
+    desc: "AWESOME!!!!"
+  },
+  {
+    id: "3",
+    name: "Jurassic Park",
+    desc: "How come you don't know this guy?"
+  }
+]
+
 // The GraphQL schema in string form
 const typeDefs = `
-  type Query { books: [Book], firstBook: Book, getBook(id: String!): Book }
+  type Query { 
+    books: [Book], 
+    firstBook: Book, 
+    getBook(id: String!): 
+    Book authors: [Author]
+  }
   type Book { id: String, title: String, author: String }
+  type Author { id: String, name: String, desc: String }
 `;
 
 // The resolvers
@@ -45,6 +69,9 @@ const resolvers = {
     },
     getBook(parent, args, context, info) {
       return _.find(books, {id: args.id})
+    },
+    authors() {
+      return authors
     }
   }
 };
@@ -78,6 +105,20 @@ GO to localhost:3000/graphql
     id
     title
     author
+  }
+}
+{
+  getBook(id: "2") {
+    id
+    title
+    author
+  }
+}
+{
+  authors {
+    id
+    name
+    desc
   }
 }
 
