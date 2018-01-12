@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const _ = require('lodash')
 const { graphqlExpress, graphiqlExpress } = require('apollo-server-express');
 const { makeExecutableSchema } = require('graphql-tools');
+const { nodes } = require('./data')
 
 // Some fake data
 const books = [
@@ -52,10 +53,17 @@ const typeDefs = `
     books: [Book], 
     firstBook: Book, 
     getBook(id: String!): 
-    Book authors: [Author]
+    Book authors: [Author],
+    nodes: [Node]
   }
   type Book { id: String, title: String, author: String }
   type Author { id: String, name: String, desc: String }
+  type Node {
+    nid: String,
+    type: String,
+    status: String,
+    title: String
+  }
 `;
 
 // The resolvers
@@ -72,6 +80,9 @@ const resolvers = {
     },
     authors() {
       return authors
+    },
+    nodes () {
+      return nodes
     }
   }
 };
